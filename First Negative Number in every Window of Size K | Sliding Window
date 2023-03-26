@@ -1,0 +1,36 @@
+Question Link: https://practice.geeksforgeeks.org/problems/first-negative-integer-in-every-window-of-size-k3345/1
+
+Logic:
+  Identification of Sliding Window
+  window size : k
+  
+  take two i and j starts at index 0, one queue to push negative elements and one vector for our ans
+  traverse over the array and whenever encounter the negative element push it to queue
+  Now if you encounter (j-i+1) == k then check is queue empty if yes then push zero to vector
+  else push front element of queue to vector, check is front of queue equals to arr[i] if yes  then pop from queue
+  in last increment the  start counter 
+  
+  vector<long long> printFirstNegativeInteger(long long int A[],
+                                             long long int N, long long int K) {
+                                            
+        vector<long long> v1;
+        queue<long long>q;
+        int i=0,j=0;
+        while(j<N){
+            if(A[j] < 0) // push negative elements to queue
+                q.push(A[j]);
+            if(j-i+1 == K){ //now window size equals to k
+                if(q.empty()) //check is queue empty
+                    v1.push_back(0);  //if yes then push 0 to vector because there is no negative elements
+                else{
+                    v1.push_back(q.front()); //push front of queue to vector
+                    if(q.front() == A[i])    //Now check is front of queue equals to A[i]
+                        q.pop();            // if yes remove the element
+                }
+                i++;              //increment the counter
+            }
+            j++;
+        }
+        return v1;
+                                                 
+ }
