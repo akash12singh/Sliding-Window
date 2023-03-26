@@ -1,0 +1,50 @@
+Question Link : https://leetcode.com/problems/maximum-sum-of-distinct-subarrays-with-length-k/description/
+Logic 
+  We have to find maximum  sum from all the subarrays of length of K.
+  Since it is sliding window type problem, let's identify how?
+ Identification
+ Given length K
+        sum
+        subarray
+        maximum
+ these property show it is definitely a sliding window type problem
+ 
+ Now let's move to code logic, take two pointers i and j start at index 0, sum = 0, max_sum=INT_MIN(because we need to find maximum sum), and a map to keep elements to distinct
+ traverse over the loop till j <  size of array then 
+ check (j-i+1 < k)
+   increment the j counter
+  else check size of map is equal to k
+       if yes then update the max_sum
+       since we have to forward, we need to increment the i counter and alse decrement the count of element at index start(i) from the map and remove from curr_sum
+       Now check count of element at i  is zero if yes remove from map;
+       finally incremnet the counter i++ j++
+  In last 
+  check, if max_sum is less than zero, return 0 else return max_sum
+  
+ code:
+ 
+ long long maximumSubarraySum(vector<int>& nums, int k) {
+        unordered_map<int,int> mp;
+         long max_sum = INT_MIN,sum = 0;
+        int i=0,j=0;
+ 
+        while(j<nums.size()){ // till j is less than size of vector
+            sum += nums[j];   // add the  value of vectors in sum
+            mp[nums[j]]++;  // add the count of elements in map
+            if(j-i+1 < k){                // if current window is less than k
+                j++;                      // increment the j
+            }
+            else{                          // if(j-i+1 == k)
+                if(mp.size()==k)            // check size of map is equal to window size because if any duplicates will be there, size of map will be less
+                    max_sum = max(max_sum,sum);   // update the max_sum
+                sum -= nums[i];                   // remove from current sum start index element[i]
+                mp[nums[i]]--;                    //decrement the count of nums[i] in map
+                if(mp[nums[i]] == 0) mp.erase(nums[i]);          // update the map  
+                i++; 
+                j++;
+            }
+        }
+        if(max_sum > 0)
+            return max_sum;
+        return 0;
+    }
